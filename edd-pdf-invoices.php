@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: Easy Digital Downloads - PDF Invoices
- * Plugin URL: http://easydigitaldownloads.com/extension/pdf-invoices/
+ * Plugin URL: http://easydigitaldownloads.com/downloads/pdf-invoices/
  * Description: Creates PDF Invoices for each purchase available to both admins and customers
- * Author: Easy Digital Downloads (Lead Developer: Sunny Ratilal)
+ * Author: Easy Digital Downloads
  * Author URI: https://easydigitaldownloads.com
- * Version: 2.2.19
+ * Version: 2.2.20
  * Requires at least: 4.0
- * Tested up to: 4.6
+ * Tested up to: 4.7
  *
  * Text Domain: eddpdfi
  * Domain Path: languages
@@ -17,7 +17,7 @@
  * @package  EDD_PDF_Invoices
  * @category Core
  * @author   Sunny Ratilal
- * @version  2.2.19
+ * @version  2.2.20
  */
 
 // Exit if accessed directly
@@ -64,7 +64,7 @@ final class EDD_PDF_Invoices {
 	 * @var string
 	 * @since 1.0
 	 */
-	public $version = '2.2.19';
+	public $version = '2.2.20';
 
 	/**
 	 * Get the instance and store the class inside it. This plugin utilises
@@ -514,7 +514,7 @@ final class EDD_PDF_Invoices {
 			$eddpdfi_payment_gateway = get_post_meta( $eddpdfi_payment->ID, '_edd_payment_gateway', true );
 			$eddpdfi_payment_method = edd_get_gateway_admin_label( $eddpdfi_payment_gateway );
 
-			$company_name = isset( $edd_options['eddpdfi_company_name'] ) ? $edd_options['eddpdfi_company_name'] : '';
+			$company_name = isset( $edd_options['eddpdfi_company_name'] ) ? apply_filters( 'eddpdfi_company_name', $edd_options['eddpdfi_company_name'] ) : '';
 
 			$eddpdfi_payment_date = date_i18n( get_option( 'date_format' ), strtotime( $eddpdfi_payment->post_date ) );
 			$eddpdfi_payment_status = edd_get_payment_status( $eddpdfi_payment, true );
@@ -551,7 +551,7 @@ final class EDD_PDF_Invoices {
 			if ( wp_is_mobile() ) {
 				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', 'I' );
 			} else {
-				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', 'D' );
+				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', 'I' );
 			}
 		} else if ( isset( $_GET['purchase_id'] )  && isset( $_GET['email'] ) && isset( $_GET['purchase_key'] ) ) {
 			$eddpdfi_payment = get_post( $_GET['purchase_id'] );
@@ -560,7 +560,7 @@ final class EDD_PDF_Invoices {
 			$eddpdfi_payment_gateway = edd_get_payment_gateway( $eddpdfi_payment->ID );
 			$eddpdfi_payment_method = edd_get_gateway_admin_label( $eddpdfi_payment_gateway );
 
-			$company_name = isset( $edd_options['eddpdfi_company_name'] ) ? $edd_options['eddpdfi_company_name'] : '';
+			$company_name = isset( $edd_options['eddpdfi_company_name'] ) ? apply_filters( 'eddpdfi_company_name', $edd_options['eddpdfi_company_name'] ) : '';
 
 			$eddpdfi_payment_date = date_i18n( get_option( 'date_format' ), strtotime( $eddpdfi_payment->post_date ) );
 			$eddpdfi_payment_status = edd_get_payment_status( $eddpdfi_payment, true );

@@ -36,8 +36,8 @@ function eddpdfi_pdf_template_lines( $eddpdfi_pdf, $eddpdfi_payment, $eddpdfi_pa
 	$eddpdfi_pdf->AddFont( 'droidserif',  '' );
 	$eddpdfi_pdf->AddFont( 'droidserifb', '' );
 
-	$font  = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freeserif' : 'droidserif';
-	$fontb = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freeserif' : 'droidserifb';
+	$font  = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'droidserif';
+	$fontb = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'droidserifb';
 
 	$eddpdfi_pdf->SetMargins( 8, 8, 8 );
 
@@ -216,7 +216,7 @@ $eddpdfi_pdf->Cell( 0, 6, $country, 0, 2, 'L', false );
 				$eddpdfi_download_title .= ' - ' . edd_get_price_option_name( $eddpdfi_download_id, $price_id, $payment_id );
 			}
 
-			if ( isset( $cart_item['discount'] ) && ! empty( $cart_item['discount'] ) ) {
+			if ( edd_get_payment_meta( $payment_id, '_edd_sl_is_renewal', true ) ) {
 				$eddpdfi_download_title .= "\n" . __( 'License Renewal Discount:', 'eddpdfi' ) . ' ' . html_entity_decode( edd_currency_filter( edd_format_amount( $cart_item['discount'] ) ), ENT_COMPAT, 'UTF-8'  );
 			}
 
@@ -265,6 +265,13 @@ $eddpdfi_pdf->Cell( 0, 6, $country, 0, 2, 'L', false );
 				$eddpdfi_pdf->Cell( 102, 8, $fee['label'] . ' - ' . $fee_amount, 0, 2, 'L', false );
 			} // end foreach
 		}
+
+		$was_renewal = edd_get_payment_meta( $payment_id, '_edd_sl_is_renewal', true );
+		if ( $was_renewal ) {
+			$eddpdfi_pdf->SetX( 35 );
+			$eddpdfi_pdf->Cell( 102, 8, __( 'Was Renewal', 'eddpdfi' ) . ' - ' . ( $was_renewal ? __( 'Yes', 'eddpdfi' ) : __( 'No', 'eddpdfi' ) ), 0, 2, 'L', false );
+		}
+
 		$eddpdfi_pdf->SetX( 35 );
 		$eddpdfi_pdf->Cell( 0, 8, __( 'Discount Used', 'eddpdfi' ) . ' - ' . $eddpdfi_discount, 0, 2, 'L', false );
 		$eddpdfi_pdf->Cell( 0, 11, __( 'Total Paid', 'eddpdfi' ) . ' - ' . html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_payment_amount( $eddpdfi_payment->ID ) ) ), ENT_COMPAT, 'UTF-8' ), 0, 2, 'L', false );

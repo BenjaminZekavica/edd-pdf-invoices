@@ -210,7 +210,7 @@ $eddpdfi_pdf->Cell( 0, 6, $country, 0, 2, 'L', false );
 				$eddpdfi_download_title .= ' - ' . edd_get_price_option_name( $eddpdfi_download_id, $price_id, $payment_id );
 			}
 
-			if ( isset( $cart_item['discount'] ) && ! empty( $cart_item['discount'] ) ) {
+			if ( edd_get_payment_meta( $payment_id, '_edd_sl_is_renewal', true ) ) {
 				$eddpdfi_download_title .= "\n" . __( 'License Renewal Discount:', 'eddpdfi' ) . ' ' . html_entity_decode( edd_currency_filter( edd_format_amount( $cart_item['discount'] ) ), ENT_COMPAT, 'UTF-8'  );
 			}
 
@@ -259,6 +259,12 @@ $eddpdfi_pdf->Cell( 0, 6, $country, 0, 2, 'L', false );
 				$eddpdfi_pdf->SetX( 35 );
 				$eddpdfi_pdf->Cell( 102, 8, $fee['label'] . ' - ' . $fee_amount, 0, 2, 'L', false );
 			}
+		}
+
+		$was_renewal = edd_get_payment_meta( $payment_id, '_edd_sl_is_renewal', true );
+		if ( $was_renewal ) {
+			$eddpdfi_pdf->SetX( 35 );
+			$eddpdfi_pdf->Cell( 102, 8, __( 'Was Renewal', 'eddpdfi' ) . ' - '  . ( $was_renewal ? __( 'Yes', 'eddpdfi' ) : __( 'No', 'eddpdfi' ) ), 0, 2, 'L', false );
 		}
 
 		$total = html_entity_decode( edd_currency_filter( edd_format_amount( edd_get_payment_amount( $eddpdfi_payment->ID ) ) ), ENT_COMPAT, 'UTF-8' );

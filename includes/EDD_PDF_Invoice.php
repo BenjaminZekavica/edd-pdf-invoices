@@ -46,20 +46,20 @@ class EDD_PDF_Invoice extends TCPDF {
 			$edd_options['eddpdfi_templates'] == 'red' ||
 			$edd_options['eddpdfi_templates'] == 'yellow'
 		) {
-			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freesans' : 'opensans';
+			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'opensans';
 			$this->AddFont( 'opensansi', '' );
 			$this->SetFont( $font, 'I', 8 );
 		} else if ( $edd_options['eddpdfi_templates'] == 'lines' || $edd_options['eddpdfi_templates'] == 'blue_stripe' ) {
-			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freeserif' : 'droidserif';
+			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'droidserif';
 			$this->AddFont( 'droidserifi', '' );
 			$this->SetFont( $font, 'I', 8 );
 		} else if ( $edd_options['eddpdfi_templates'] == 'traditional' ) {
-			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freeserif' : 'times';
+			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'times';
 			$this->AddFont( 'times', 'I' );
 			$this->SetFont( $font, 'I', 8 );
 			$this->SetTextColor( 50, 50, 50 );
 		} else {
-			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freesans' : 'helvetica';
+			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'helvetica';
 			$this->SetFont( $font, 'I', 8 );
 		} // end if
 
@@ -100,20 +100,20 @@ class EDD_PDF_Invoice extends TCPDF {
 			$edd_options['eddpdfi_templates'] == 'red' ||
 			$edd_options['eddpdfi_templates'] == 'yellow'
 		) {
-			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freesans' : 'opensans';
+			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'opensans';
 			$this->AddFont( 'opensansi', '' );
 			$this->SetFont( $font, 'I', 8 );
 		} else if ( $edd_options['eddpdfi_templates'] == 'lines' || $edd_options['eddpdfi_templates'] == 'blue_stripe' ) {
-			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freeserif' : 'droidserif';
+			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'droidserif';
 			$this->AddFont( 'droidserifi', '' );
 			$this->SetFont( $font, 'I', 8 );
 		} else if ( $edd_options['eddpdfi_templates'] == 'traditional' ) {
-			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freeserif' : 'times';
+			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'times';
 			$this->AddFont( 'times', 'I' );
 			$this->SetFont( $font, 'I', 8 );
 			$this->SetTextColor( 50, 50, 50 );
 		} else {
-			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freesans' : 'helvetica';
+			$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'helvetica';
 			$this->SetFont( $font, 'I', 8 );
 		} // end if
 
