@@ -37,8 +37,8 @@ function eddpdfi_pdf_template_traditional( $eddpdfi_pdf, $eddpdfi_payment, $eddp
 	$eddpdfi_pdf->AddFont('times', 'BI');
 	$eddpdfi_pdf->AddFont('times', 'I');
 
-	$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freeserif' : 'times';
-	$fontb = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'freesans' : 'helvetica';
+	$font = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'times';
+	$fontb = isset( $edd_options['eddpdfi_enable_char_support'] ) ? 'kozminproregular' : 'helvetica';
 
 	$eddpdfi_pdf->SetMargins( 8, 20, 8 );
 	$eddpdfi_pdf->SetX( 20 );
@@ -222,7 +222,7 @@ $eddpdfi_pdf->Cell( 0, 6, $country, 0, 2, 'L', false );
 				$eddpdfi_download_title .= ' - ' . edd_get_price_option_name( $eddpdfi_download_id, $price_id, $payment_id );
 			}
 
-			if ( isset( $cart_item['discount'] ) && ! empty( $cart_item['discount'] ) ) {
+			if ( edd_get_payment_meta( $payment_id, '_edd_sl_is_renewal', true ) ) {
 				$eddpdfi_download_title .= "\n" . __( 'License Renewal Discount:', 'eddpdfi' ) . ' ' . html_entity_decode( edd_currency_filter( edd_format_amount( $cart_item['discount'] ) ), ENT_COMPAT, 'UTF-8'  );
 			}
 
@@ -274,6 +274,13 @@ $eddpdfi_pdf->Cell( 0, 6, $country, 0, 2, 'L', false );
 				$eddpdfi_pdf->Cell( 150, 8, $fee['label'], 'TLBR', 0, 'R', false );
 				$eddpdfi_pdf->Cell( 43, 8, $fee_amount, 'BTR', 2, 'C', true );
 			}
+		}
+
+		$was_renewal = edd_get_payment_meta( $payment_id, '_edd_sl_is_renewal', true );
+		if ( $was_renewal ) {
+			$eddpdfi_pdf->SetX( 8 );
+			$eddpdfi_pdf->Cell( 150, 8, __( 'Was Renewal', 'eddpdfi' ), 'TLBR', 0, 'R', false );
+			$eddpdfi_pdf->Cell( 43, 8, ( $was_renewal ? __( 'Yes', 'eddpdfi' ) : __( 'No', 'eddpdfi' ) ), 'BTR', 2, 'C', false );
 		}
 
 		$eddpdfi_pdf->SetX( 8 );

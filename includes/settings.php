@@ -11,33 +11,20 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! function_exists( 'edd_et_logo_settings' ) ) :
 /**
- * Logo Settings
+ * Registers the settings section
  *
- * Registers the settings to enable logo upload to be displayed on the invoice
+ * @since 2.2.20
  *
- * @since 1.0
+ * @param array $sections Array of EDD Extensions settings sections
  *
- * @param array $settings Array of pre-defined setttings
- *
- * @return array Merged array with new settings
+ * @return array The modified EDD Extensions settings section array
  */
-function eddpdfi_logo_settings( $settings ) {
-	$logo_settings = array(
-		array(
-			'id'   => 'eddpdfi_email_logo',
-			'name' => __( 'Email Logo', 'eddpdfi' ),
-			'desc' => __( 'Upload or choose a logo to be displayed at the top of the email', 'eddpdfi' ),
-			'type' => 'upload',
-			'size' => 'regular'
-		)
-	);
-
-	return array_merge( $logo_settings, $settings );
+function eddpdfi_settings_section( $sections ) {
+	$sections['eddpdfi-settings'] = __( 'PDF Invoices', 'eddpdfi' );
+	return $sections;
 }
-add_filter( 'edd_settings_emails', 'eddpdfi_logo_settings' );
-endif;
+add_filter( 'edd_settings_sections_extensions', 'eddpdfi_settings_section' );
 
 /**
  * Add Settings
@@ -182,12 +169,28 @@ function eddpdfi_add_settings( $settings ) {
 			'name' => __( 'Additional Notes', 'eddpdfi' ),
 			'desc' => __( 'Enter any messages you would to be displayed at the end of the invoice. Only plain text is currently supported. Any HTML will not be shown on the invoice.', 'eddpdfi' ),
 			'type' => 'rich_editor'
+		),
+		array(
+			'id'   => 'eddpdfi_email_settings',
+			'name' => '<strong>' . __( 'PDF Invoice Email Settings', 'eddpdfi' ) . '</strong>',
+			'type' => 'header'
+		),
+		array(
+			'id'   => 'eddpdfi_email_logo',
+			'name' => __( 'Email Logo', 'eddpdfi' ),
+			'desc' => __( 'Upload or choose a logo to be displayed at the top of the email', 'eddpdfi' ),
+			'type' => 'upload',
+			'size' => 'regular'
 		)
 	);
 
+	if ( version_compare( EDD_VERSION, 2.5, '>=' ) ) {
+		$eddpdfi_settings = array( 'eddpdfi-settings' => $eddpdfi_settings );
+	}
+
 	return array_merge( $settings, $eddpdfi_settings );
 }
-add_filter( 'edd_settings_misc', 'eddpdfi_add_settings' );
+add_filter( 'edd_settings_extensions', 'eddpdfi_add_settings' );
 
 /**
  * Text Callback
