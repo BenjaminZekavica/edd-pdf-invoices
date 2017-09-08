@@ -181,7 +181,7 @@ $eddpdfi_pdf->Cell( 0, 6, $country, 0, 2, 'L', false );
 			$price_id     = isset( $cart_item['item_number']['options']['price_id'] ) ? $cart_item['item_number']['options']['price_id'] : null;
 
 			$eddpdfi_download_id = isset( $eddpdfi_payment_meta['cart_details'] ) ? $cart_item['id'] : $cart_item;
-			$user_info = maybe_unserialize( $eddpdfi_payment_meta['user_info'] );
+			$user_info = $eddpdfi_payment_meta['user_info'];
 			$eddpdfi_final_download_price = isset( $cart_item['subtotal'] ) ? $cart_item['subtotal'] : null;
 
 			$item_id    = isset( $cart_item['id']    ) ? $cart_item['id'] : $cart_item;
