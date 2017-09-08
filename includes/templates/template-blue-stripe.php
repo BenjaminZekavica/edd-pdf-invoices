@@ -164,7 +164,7 @@ $eddpdfi_pdf->Cell( 0, 6, $country, 0, 2, 'L', false );
 		$eddpdfi_pdf->Cell( 45, 6, __( 'Price', 'eddpdfi' ), 0, 2, 'R', false );
 	}
 
-	$eddpdfi_pdf_downloads = isset( $eddpdfi_payment_meta['cart_details'] ) ? maybe_unserialize( $eddpdfi_payment_meta['cart_details'] ) : false;
+	$eddpdfi_pdf_downloads = isset( $eddpdfi_payment_meta['cart_details'] ) ? $eddpdfi_payment_meta['cart_details'] : false;
 
 	if ( $eddpdfi_pdf_downloads ) {
 		$eddpdfi_pdf->SetTextColor( 50, 50, 50 );

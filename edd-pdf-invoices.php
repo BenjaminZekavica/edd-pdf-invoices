@@ -5,7 +5,7 @@
  * Description: Creates PDF Invoices for each purchase available to both admins and customers
  * Author: Easy Digital Downloads
  * Author URI: https://easydigitaldownloads.com
- * Version: 2.2.20
+ * Version: 2.2.21
  * Requires at least: 4.0
  * Tested up to: 4.7
  *
@@ -64,7 +64,7 @@ final class EDD_PDF_Invoices {
 	 * @var string
 	 * @since 1.0
 	 */
-	public $version = '2.2.20';
+	public $version = '2.2.21';
 
 	/**
 	 * Get the instance and store the class inside it. This plugin utilises
@@ -508,20 +508,20 @@ final class EDD_PDF_Invoices {
 		$eddpdfi_invoice_nonce = isset( $_GET['_wpnonce'] ) ? $_GET['_wpnonce'] : null;
 
 		if ( is_admin() && wp_verify_nonce( $eddpdfi_invoice_nonce, 'eddpdfi_generate_invoice' ) ) {
-			$eddpdfi_payment = get_post( $_GET['purchase_id'] );
-			$eddpdfi_payment_meta = edd_get_payment_meta( $_GET['purchase_id'] );
-			$eddpdfi_buyer_info = maybe_unserialize( $eddpdfi_payment_meta['user_info'] );
-			$eddpdfi_payment_gateway = get_post_meta( $eddpdfi_payment->ID, '_edd_payment_gateway', true );
-			$eddpdfi_payment_method = edd_get_gateway_admin_label( $eddpdfi_payment_gateway );
+			$eddpdfi_payment         = edd_get_payment( absint( $_GET[ 'purchase_id' ] ) );
+			$eddpdfi_payment_meta    = $eddpdfi_payment->payment_meta;
+			$eddpdfi_buyer_info      = $eddpdfi_payment_meta[ 'user_info' ];
+			$eddpdfi_payment_gateway = $eddpdfi_payment->gateway;
+			$eddpdfi_payment_method  = edd_get_gateway_admin_label( $eddpdfi_payment_gateway );
 
 			$company_name = isset( $edd_options['eddpdfi_company_name'] ) ? apply_filters( 'eddpdfi_company_name', $edd_options['eddpdfi_company_name'] ) : '';
 
-			$eddpdfi_payment_date = date_i18n( get_option( 'date_format' ), strtotime( $eddpdfi_payment->post_date ) );
+			$eddpdfi_payment_date = date_i18n( get_option( 'date_format' ), strtotime( $eddpdfi_payment->date ) );
 			$eddpdfi_payment_status = edd_get_payment_status( $eddpdfi_payment, true );
 
 			// WPML Support
 			if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
-				$lang = get_post_meta( $_GET['purchase_id'], 'wpml_language', true);
+				$lang = get_post_meta( absint( $_GET['purchase_id'] ), 'wpml_language', true);
 				if ( ! empty( $lang ) ) {
 					global $sitepress;
 					$sitepress->switch_lang( $lang );
@@ -549,9 +549,9 @@ final class EDD_PDF_Invoices {
 			}
 
 			if ( wp_is_mobile() ) {
-				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', 'I' );
+				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', apply_filters( 'eddpdfi_invoice_destination', 'I' ) );
 			} else {
-				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', 'I' );
+				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', apply_filters( 'eddpdfi_invoice_destination', 'I' ) );
 			}
 		} else if ( isset( $_GET['purchase_id'] )  && isset( $_GET['email'] ) && isset( $_GET['purchase_key'] ) ) {
 			$eddpdfi_payment = get_post( $_GET['purchase_id'] );
@@ -594,9 +594,9 @@ final class EDD_PDF_Invoices {
 			}
 
 			if ( wp_is_mobile() ) {
-				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', 'I' );
+				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', apply_filters( 'eddpdfi_invoice_destination', 'I' ) );
 			} else {
-				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', 'D' );
+				$eddpdfi_pdf->Output( apply_filters( 'eddpdfi_invoice_filename_prefix', 'Invoice-' ) . eddpdfi_get_payment_number( $eddpdfi_payment->ID ) . '.pdf', apply_filters( 'eddpdfi_invoice_destination', 'D' ) );
 			}
 		}
 
