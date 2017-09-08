@@ -3,7 +3,7 @@ Plugin URI: http://easydigitaldownloads.com
 Contributors: easydigitaldownloads, sunnyratilal
 Requires at least: 4.0
 Tested up to: 4.7
-Stable Tag: 2.2.20
+Stable Tag: 2.2.21
 Requires at least: Easy Digital Downloads 1.7
 
 Dynamically generate PDF Invoices for each purchase made. Also features invoice templates and email templates to match the design of the invoices.
@@ -30,10 +30,14 @@ More information at [Easy Digital Downloads.com](http://easydigitaldownloads.com
 3. Customers can now download invoices with any purchase on the Purchase History page or you can view the Payment History page
 
 == Changelog ==
+
+= 2.2.21 =
+* Use EDD_Payment to get user_info, to avoid nested calls to maybe_unserialize.
+
 = 2.2.20 =
 * Chinese characters now display correctly
 * Settings have been moved to a separate subsection under Downloads > Extensions
-* Add a filter to allow for
+* Add a filter to allow the company name to be filtered
 * Display renewal notice on invoices for all license renewals
 * Ensure that 'License Renewal Discount' is not displayed for all discounts
 
